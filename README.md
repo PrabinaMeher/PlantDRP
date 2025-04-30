@@ -5,14 +5,14 @@ This repository contains R code to run plantDRP tool from command line or R inte
 # Requirements
 R 4.0.2 version (The program runs only in the R version 4.0.2, no older or latest version will work)
 R packages
-## From CRAN
+### From CRAN
     xgboost
     magrittr
     Matrix
     PSSMCOOL
     R2HTML
     
-## From Bioconductor
+### From Bioconductor
     Biostrings
 
 # Download files
