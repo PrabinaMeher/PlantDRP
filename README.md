@@ -54,25 +54,22 @@ contains the index of features which will be used for the prediction
 - Create a working directory 
 - Place all the downloaded files and bin folder in the working directory
 - Before running the script the user needs to make few changes in the R code file.
+  
       - User can use its own FASTA file by replacing the gene.fasta file inside the R code with the name of its file in the following line
         [21] x <- readAAStringSet("gene.fasta")
         [21] x <- readAAStringSet("replace with your FASTA file name")
 
       - User have to set path according to there working directory in the following line
-        [51] shell("path/to/working/directory/bin/psiblast -query path/to/working/directory/query.fasta -db path/to/working/directory/train - 
-             num_iterations 3 -evalue 0.001 -out_ascii_pssm path/to/working/directory/protein.pssm")
+        [51] shell("path/to/working/directory/bin/psiblast -query path/to/working/directory/query.fasta -db path/to/working/directory/train -num_iterations 3 -evalue 0.001 -out_ascii_pssm path/to/working/directory/protein.pssm")
 
         Example:
-        [51] shell("C:/xampp/htdocs/plantdrp/server/bin/psiblast -query C:/xampp/htdocs/plantdrp/server/query.fasta -db 
-             C:/xampp/htdocs/plantdrp/server/train -num_iterations 3 -evalue 0.001 -out_ascii_pssm 
-             C:/xampp/htdocs/plantdrp/server/protein.pssm")
+        [51] shell("C:/xampp/htdocs/plantdrp/server/bin/psiblast -query C:/xampp/htdocs/plantdrp/server/query.fasta -db C:/xampp/htdocs/plantdrp/server/train -num_iterations 3 -evalue 0.001 -out_ascii_pssm C:/xampp/htdocs/plantdrp/server/protein.pssm")
   
 - Running script
-   
-   path/to/R-4.0.2/Rscript <script.R>
-   
-   Example:
-   C:/PROGRA~1/R/R-4.0.2/bin/Rscript plantdrp.R
+  path/to/R-4.0.2/Rscript <script.R>
+
+  Example:
+  C:/PROGRA~1/R/R-4.0.2/bin/Rscript plantdrp.R
    
    NOTE: User needs to give absolute path for R version 4.0.2 only
 
