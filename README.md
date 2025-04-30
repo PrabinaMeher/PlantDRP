@@ -83,11 +83,9 @@ After the program is completed, an HTML file will be generated that includes a t
 
 For example:
 
-# Sheet1
-
 | |Sequence ID |Predicted as|With Probability|
 |---|---|---|---|
 |1|LOC_Os06g41640.1|DRP|1|
 |2|Pl17|DRP|1|
-|3|sp"|Q2TSC7"|PCS1_LOTJA|non-DRP|1|
-|4|sp"|Q5SCW3"|YCF2_HUPLU|non-DRP|0.99|
+|3|sp"|Q2TSC7|PCS1_LOTJA"|non-DRP|1|
+|4|sp"|Q5SCW3|YCF2_HUPLU"|non-DRP|0.99|
