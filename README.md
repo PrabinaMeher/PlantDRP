@@ -60,14 +60,15 @@ contains the index of features which will be used for the prediction
         [21] x <- readAAStringSet("gene.fasta")
         [21] x <- readAAStringSet("replace with your FASTA file name")
 
-     -  User have to set path according to there working directory in the following line
+-  User have to set path according to there working directory in the following line
   
-            [51] shell("path/to/working/directory/bin/psiblast -query path/to/working/directory/query.fasta -db path/to/working/directory/train -num_iterations 3 -evalue 0.001 -out_ascii_pssm path/to/working/directory/protein.pssm")
+      [51] shell("path/to/working/directory/bin/psiblast -query path/to/working/directory/query.fasta -db path/to/working/directory/train -num_iterations 3 -evalue 0.001 -out_ascii_pssm path/to/working/directory/protein.pssm")
 
-        Example:
-            [51] shell("C:/xampp/htdocs/plantdrp/server/bin/psiblast -query C:/xampp/htdocs/plantdrp/server/query.fasta -db C:/xampp/htdocs/plantdrp/server/train -num_iterations 3 -evalue 0.001 -out_ascii_pssm C:/xampp/htdocs/plantdrp/server/protein.pssm")
+  Example:
+        [51] shell("C:/xampp/htdocs/plantdrp/server/bin/psiblast -query C:/xampp/htdocs/plantdrp/server/query.fasta -db C:/xampp/htdocs/plantdrp/server/train -num_iterations 3 -evalue 0.001 -out_ascii_pssm C:/xampp/htdocs/plantdrp/server/protein.pssm")
   
 - Running script
+  
       path/to/R-4.0.2/Rscript <script.R>
 
   Example:
