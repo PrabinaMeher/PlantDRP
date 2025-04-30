@@ -62,7 +62,7 @@ contains the index of features which will be used for the prediction
 
   -  User have to set path according to there working directory in the following line
 
-        [51] shell("path/to/working/directory/bin/psiblast -query path/to/working/directory/query.fasta -db path/to/working/directory/train -num_iterations 3 -evalue 0.001 -out_ascii_pssm path/to/working/directory/protein.pssm")
+           [51] shell("path/to/working/directory/bin/psiblast -query path/to/working/directory/query.fasta -db path/to/working/directory/train -num_iterations 3 -evalue 0.001 -out_ascii_pssm path/to/working/directory/protein.pssm")
 
   Example:
   
