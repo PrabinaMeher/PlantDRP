@@ -26,11 +26,11 @@ R 4.0.2 version (The program runs only in the R version 4.0.2, no older or lates
 - drg_xgboost_feature.txt
 
 # File description
-### R script
-plantdrp.R = It is an R file which contains the code to run the PlantDRP model from command line or R interface.
+### plantdrp.R
+It is an R file which contains the code to run the PlantDRP model from command line or R interface.
 
-### Example file
-gene.fasta = FASTA file consists of a header line starting with a ">" followed by the amino acid sequence
+### gene.fasta
+It is an example FASTA file consists of a header line starting with a ">" followed by the amino acid sequence
 
 ### bin folder
 contains psiblast executable
