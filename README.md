@@ -16,14 +16,14 @@ R 4.0.2 version (The program runs only in the R version 4.0.2, no older or lates
     Biostrings
 
 # Download files
-plantdrp.R
-gene.fasta
-bin folder
-train.phr
-train.pin
-train.psq
-xgb.model
-drg_xgboost_feature.txt
+- plantdrp.R
+- gene.fasta
+- bin folder
+- train.phr
+- train.pin
+- train.psq
+- xgb.model
+- drg_xgboost_feature.txt
 
 # File description
 ### R script
