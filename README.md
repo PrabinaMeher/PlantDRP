@@ -15,7 +15,7 @@ R 4.0.2 version (The program runs only in the R version 4.0.2, no older or lates
 ### From Bioconductor
     Biostrings
 
-# Download files
+# Download files and folder
 - plantdrp.R
 - gene.fasta
 - bin folder
@@ -24,6 +24,7 @@ R 4.0.2 version (The program runs only in the R version 4.0.2, no older or lates
 - train.psq
 - xgb.model
 - drg_xgboost_feature.txt
+- bin
 
 # File description
 ### plantdrp.R
