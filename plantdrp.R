@@ -18,7 +18,7 @@ if (file.exists("ksb_pssm.txt")) file.remove("ksb_pssm.txt")
 
 ####################################################################
 ###########Sequence filtering##########
-x <- readAAStringSet("gene.fasta")
+x <- readAAStringSet("example.fasta")
 nx <- names(x)
 names(x)<- nx
 writeXStringSet(x, "test.fasta")
