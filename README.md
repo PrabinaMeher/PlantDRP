@@ -17,7 +17,7 @@ R 4.0.2 version (The program runs only in the R version 4.0.2, no older or lates
 
 # Download files and folder
 - plantdrp.R
-- gene.fasta
+- example.fasta
 - bin folder
 - train.phr
 - train.pin
@@ -30,7 +30,7 @@ R 4.0.2 version (The program runs only in the R version 4.0.2, no older or lates
 ### plantdrp.R
 It is an R file which contains the code to run the PlantDRP model from command line or R interface.
 
-### gene.fasta
+### example.fasta
 It is an example FASTA file consists of a header line starting with a ">" followed by the amino acid sequence
 
 ### bin folder
@@ -58,7 +58,7 @@ contains the index of features which will be used for the prediction
   
   - User can use its own FASTA file by replacing the gene.fasta file inside the R code with the name of its file in the following line
   
-        [21] x <- readAAStringSet("gene.fasta")
+        [21] x <- readAAStringSet("example.fasta")
         [21] x <- readAAStringSet("replace with your FASTA file name")
 
   -  User have to set path according to there working directory in the following line
