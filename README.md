@@ -28,7 +28,7 @@ R 4.0.2 version (The program runs only in the R version 4.0.2, no older or lates
 
 # File description
 ### plantdrp.R
-It is an R file which contains the code to run the PlantDRP model from command line or R interface.
+It is an R file which contains the code to run the PlantDRP model from command line or R interface
 
 ### example.fasta
 It is an example FASTA file consists of a header line starting with a ">" followed by the amino acid sequence
@@ -52,8 +52,8 @@ Our trained model with Extreme Boosting (XGB) algorithm
 contains the index of features which will be used for the prediction
 
 # Usage 
-- Create a working directory 
-- Place all the downloaded files and bin folder in the working directory
+- Create a working directory.
+- Place all the downloaded files and bin folder in the working directory.
 - Before running the script the user needs to make few changes in the R code file.
   
   - User can use its own FASTA file by replacing the gene.fasta file inside the R code with the name of its file in the following line
