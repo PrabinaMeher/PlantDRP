@@ -44,7 +44,7 @@ contains the index of features which will be used for the prediction
 ### bin folder
 contains psiblast executable
 ### dataset folder
-contains the training dataset, which was used to train the model, and the testing dataset, which was used to evaluate the model's performance.
+contains the training dataset, which we used to train the model, and the testing dataset, which was used to evaluate the model's performance
 
 # Usage 
 - Create a working directory.
@@ -64,7 +64,7 @@ contains the training dataset, which was used to train the model, and the testin
   
          [51] shell("C:/xampp/htdocs/plantdrp/server/bin/psiblast -query C:/xampp/htdocs/plantdrp/server/query.fasta -db C:/xampp/htdocs/plantdrp/server/train -num_iterations 3 -evalue 0.001 -out_ascii_pssm C:/xampp/htdocs/plantdrp/server/protein.pssm")
   
-- Running script
+- Run script from the working directory in command line (cmd)
   
       path/to/R-4.0.2/Rscript <script.R>
 
