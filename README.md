@@ -1,4 +1,4 @@
-# plantDRP
+# PlantDRP
 # Overview
 This repository contains R code to run plantDRP tool from command line or R interface. A test file is provided for users to run and validate this script.
 
@@ -18,38 +18,33 @@ R 4.0.2 version (The program runs only in the R version 4.0.2, no older or lates
 # Download files and folder
 - plantdrp.R
 - example.fasta
-- bin folder
 - train.phr
 - train.pin
 - train.psq
 - xgb.model
 - drg_xgboost_feature.txt
 - bin
+- dataset
 
 # File description
 ### plantdrp.R
 It is an R file which contains the code to run the PlantDRP model from command line or R interface
-
 ### example.fasta
 It is an example FASTA file consists of a header line starting with a ">" followed by the amino acid sequence
-
-### bin folder
-contains psiblast executable
-
 ### train.phr
 Contains the actual sequence data (nucleotide or protein) in a compressed, indexed format
-
 ### train.pin
 Stores the sequence IDs from the original FASTA file, allowing BLAST to retrieve sequence names and descriptions
-
 ### train.psq
 Stores the sequence quality information, such as the length and coverage of the sequences
-
 ### xgb.model
 Our trained model with Extreme Boosting (XGB) algorithm
-
 ### drg_xgboost_feature.txt
 contains the index of features which will be used for the prediction
+### bin folder
+contains psiblast executable
+### dataset folder
+contains the training dataset, which was used to train the model, and the testing dataset, which was used to evaluate the model's performance.
 
 # Usage 
 - Create a working directory.
