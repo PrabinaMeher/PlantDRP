@@ -3,7 +3,7 @@
 This repository contains R code to run plantDRP tool from command line or R interface. A test file is provided for users to run and validate this script.
 
 # Requirements
-R 4.0.2 version (The program runs only in the R version 4.0.2, no older or latest version will work)
+R (any version of R as long as the required packages compatible to specific R version are installed)
 ## R packages
 ### From CRAN
     xgboost
