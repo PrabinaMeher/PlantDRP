@@ -439,7 +439,6 @@ Division of Statistical Ecology and Environmental Statistics
 PUSA, New Delhi – 110012, India
 
 ✉ meherprabin@yahoo.com  
-🐙 GitHub: [https://github.com/PrabinaMeher/plantDRP](https://github.com/PrabinaMeher/plantDRP)
 
 ---
 
