@@ -1,7 +1,7 @@
 # PlantDRP : Leveraging ProtT5 embeddings and support vector machine for prediction of plant disease resistance proteins
 
 <p align="center">
-  <img src="Figure 1.jpg" alt="PlantDRP Workflow" width="100%">
+  <img src="Workflow.jpg" alt="PlantDRP Workflow" width="100%">
 </p>
 
 **Prediction of Plant Disease Resistance Proteins**
