@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PlantDRP : Prediction of Plant Disease Resistance Proteins</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --g9:#0f2604;--g8:#1d3d08;--g7:#2d5a0e;--g6:#4a7c1f;--g5:#639922;--g4:#89b84a;--g3:#aece74;--g2:#cce09e;--g1:#e8f5d6;--g0:#f4faea;
+  --t7:#054035;--t6:#0a6450;--t5:#0f8a6e;--t4:#14b08c;--t3:#3dc9a8;--t2:#72d9c0;--t1:#b0eadb;--t0:#e0f7f2;
+  --a6:#8a5200;--a5:#b36a00;--a4:#d98a1a;--a3:#f0aa3a;--a2:#f7c876;--a1:#fce3b0;--a0:#fff6e5;
+  --bg:#f5f3ee;--bg2:#edeae3;--sur:#ffffff;--sur2:#f9f7f3;
+  --txt:#1c1c1a;--txt2:#4a4a46;--txt3:#7a7a74;
+  --bdr:rgba(0,0,0,0.08);--bdr2:rgba(0,0,0,0.14);
+  --shadow:0 2px 12px rgba(0,0,0,0.07);
+  --shadow-lg:0 8px 40px rgba(0,0,0,0.10);
+  --nav-bg:rgba(245,243,238,0.92);
+}
+[data-theme="dark"]{
+  --bg:#0e1409;--bg2:#141d0b;--sur:#1a2410;--sur2:#202e14;
+  --txt:#e8f0dc;--txt2:#a8b89a;--txt3:#6a7a5e;
+  --bdr:rgba(255,255,255,0.08);--bdr2:rgba(255,255,255,0.14);
+  --shadow:0 2px 12px rgba(0,0,0,0.3);
+  --shadow-lg:0 8px 40px rgba(0,0,0,0.4);
+  --nav-bg:rgba(14,20,9,0.94);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:300;background:var(--nav-bg);backdrop-filter:blur(16px);border-bottom:1px solid var(--bdr);height:62px;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;transition:background .3s;}
+.nav-left{display:flex;align-items:center;gap:2rem;}
+.nav-logo{display:flex;align-items:center;gap:9px;text-decoration:none;}
+.nav-logo-icon{width:32px;height:32px;}
+.nav-logo-text{font-family:'Lora',serif;font-size:1.15rem;font-weight:700;color:var(--g7);letter-spacing:-.01em;}
+[data-theme="dark"] .nav-logo-text{color:var(--g4);}
+.nav-links{display:flex;gap:1.5rem;}
+.nav-links a{text-decoration:none;color:var(--txt2);font-size:.84rem;font-weight:500;transition:color .2s;letter-spacing:.01em;}
+.nav-links a:hover{color:var(--g6);}
+[data-theme="dark"] .nav-links a:hover{color:var(--g3);}
+.nav-right{display:flex;align-items:center;gap:.875rem;}
+.nav-pip{font-family:'DM Mono',monospace;font-size:.72rem;font-weight:500;background:var(--g1);color:var(--g7);border:1px solid var(--g4);border-radius:6px;padding:4px 10px;white-space:nowrap;transition:background .2s;cursor:default;}
+[data-theme="dark"] .nav-pip{background:var(--sur2);color:var(--g3);border-color:var(--g7);}
+.nav-gh{display:flex;align-items:center;gap:5px;text-decoration:none;color:var(--txt2);font-size:.82rem;font-weight:500;border:1px solid var(--bdr2);border-radius:7px;padding:5px 11px;transition:all .2s;}
+.nav-gh:hover{background:var(--sur);color:var(--txt);}
+.nav-ver{font-size:.7rem;color:var(--txt3);font-family:'DM Mono',monospace;}
+.theme-toggle{width:34px;height:34px;border-radius:8px;border:1px solid var(--bdr2);background:var(--sur);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.95rem;transition:all .2s;color:var(--txt2);}
+.theme-toggle:hover{background:var(--bg2);}
+
+/* HERO */
+.hero{padding:110px 2.5rem 70px;max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 420px;gap:3rem;align-items:center;}
+.hero-inst{display:inline-flex;align-items:center;gap:6px;background:var(--g0);border:1px solid var(--g2);color:var(--g7);font-size:.72rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:4px 12px;border-radius:100px;margin-bottom:1.5rem;}
+[data-theme="dark"] .hero-inst{background:var(--sur2);border-color:var(--g7);color:var(--g3);}
+.hero h1{font-family:'Lora',serif;font-size:3rem;font-weight:700;line-height:1.09;color:var(--txt);margin-bottom:.5rem;letter-spacing:-.02em;}
+.hero h1 span{color:var(--g6);font-style:italic;}
+[data-theme="dark"] .hero h1 span{color:var(--g4);}
+.hero-sub{font-size:1rem;color:var(--txt2);line-height:1.7;margin-bottom:2rem;max-width:480px;}
+.hero-btns{display:flex;gap:.875rem;flex-wrap:wrap;}
+.btn-main{background:var(--g7);color:#fff;border:none;border-radius:9px;padding:12px 26px;font-size:.9rem;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:background .2s,transform .15s;font-family:'DM Sans',sans-serif;letter-spacing:.01em;}
+.btn-main:hover{background:var(--g6);transform:translateY(-1px);}
+[data-theme="dark"] .btn-main{background:var(--g6);}
+.btn-ghost{background:transparent;color:var(--txt);border:1.5px solid var(--bdr2);border-radius:9px;padding:11px 26px;font-size:.9rem;font-weight:500;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .2s;font-family:'DM Sans',sans-serif;}
+.btn-ghost:hover{background:var(--sur);border-color:var(--g4);}
+.hero-grid{display:grid;grid-template-columns:repeat(4,90px);grid-template-rows:repeat(3,90px);gap:10px;transform:rotate(-8deg);}
+.hg-cell{border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:1.75rem;animation:floatCell 4s ease-in-out infinite;border:1px solid var(--bdr);}
+.hg-cell:nth-child(2n){animation-delay:-2s;}
+.hg-cell:nth-child(3n){animation-delay:-1s;}
+.hg-cell:nth-child(4n){animation-delay:-3s;}
+@keyframes floatCell{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+
+/* STATS STRIP */
+.stats-strip{background:var(--g8);border-top:1px solid rgba(255,255,255,.05);}
+[data-theme="dark"] .stats-strip{background:var(--g9);}
+.stats-inner{max-width:1180px;margin:0 auto;padding:2rem 2.5rem;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:center;}
+.stat-val{font-family:'Lora',serif;font-size:1.9rem;font-weight:700;color:var(--g3);letter-spacing:-.01em;}
+.stat-key{font-size:.78rem;color:var(--g2);margin-top:3px;letter-spacing:.03em;font-weight:500;}
+
+/* SECTION COMMON */
+.sec{max-width:1180px;margin:0 auto;padding:5.5rem 2.5rem;}
+.sec-tag{font-size:.69rem;letter-spacing:.12em;text-transform:uppercase;color:var(--t5);font-weight:700;margin-bottom:.6rem;}
+[data-theme="dark"] .sec-tag{color:var(--t3);}
+.sec-title{font-family:'Lora',serif;font-size:2rem;font-weight:700;color:var(--txt);margin-bottom:.875rem;line-height:1.15;letter-spacing:-.01em;}
+.sec-lead{font-size:.95rem;color:var(--txt2);line-height:1.8;max-width:700px;}
+
+/* WHY */
+.why-sec{background:var(--sur);border-top:1px solid var(--bdr);}
+.why-wrap{max-width:1180px;margin:0 auto;padding:5.5rem 2.5rem;}
+.why-cols{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-top:3rem;}
+.why-text p{font-size:.95rem;color:var(--txt2);line-height:1.85;margin-bottom:1.1rem;}
+.why-text p:last-child{margin-bottom:0;}
+.why-boxes{display:flex;flex-direction:column;gap:1rem;}
+.kb{background:var(--bg);border:1px solid var(--bdr);border-radius:14px;padding:1.25rem 1.375rem;display:flex;gap:1rem;align-items:flex-start;transition:box-shadow .2s,transform .2s;}
+[data-theme="dark"] .kb{background:var(--sur2);}
+.kb:hover{box-shadow:var(--shadow);transform:translateY(-2px);}
+.kb-icon{font-size:1.4rem;flex-shrink:0;margin-top:2px;}
+.kb-title{font-weight:600;font-size:.88rem;margin-bottom:.3rem;color:var(--txt);}
+.kb-text{font-size:.8rem;color:var(--txt2);line-height:1.65;}
+
+/* PIPELINE */
+.pipe-sec{background:var(--bg2);border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);}
+[data-theme="dark"] .pipe-sec{background:var(--sur);}
+.pipe-wrap{max-width:1180px;margin:0 auto;padding:4.5rem 2.5rem;}
+.pipe-row{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;align-items:center;gap:0;margin-top:2.5rem;}
+.pipe-step{background:var(--sur);border:1px solid var(--bdr);border-radius:16px;padding:1.75rem 1.25rem;text-align:center;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;height:100%;transition:box-shadow .2s,transform .2s;}
+.pipe-step:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px);}
+[data-theme="dark"] .pipe-step{background:var(--sur2);}
+.ps-num{font-family:'DM Mono',monospace;font-size:.64rem;font-weight:700;color:var(--g5);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem;background:var(--g1);padding:3px 10px;border-radius:100px;display:inline-block;}
+[data-theme="dark"] .ps-num{background:rgba(74,124,31,.18);color:var(--g3);}
+.ps-icon{font-size:2rem;margin-bottom:.75rem;width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:var(--bg2);}
+[data-theme="dark"] .ps-icon{background:var(--bg);}
+.ps-name{font-weight:700;font-size:.92rem;color:var(--txt);margin-bottom:.35rem;}
+.ps-desc{font-size:.76rem;color:var(--txt3);line-height:1.55;max-width:160px;}
+.pipe-arrow{color:var(--g4);font-size:1.5rem;padding:0 .75rem;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+[data-theme="dark"] .pipe-arrow{color:var(--g6);}
+
+/* PREDICT TOOL */
+.predict-sec{background:var(--sur);border-top:1px solid var(--bdr);}
+.predict-wrap{max-width:960px;margin:0 auto;padding:5.5rem 2.5rem;}
+.step-lbl{font-weight:600;font-size:.84rem;color:var(--txt);display:block;margin-bottom:.6rem;}
+.step-num-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--g7);color:#fff;font-size:.7rem;font-weight:700;margin-right:.5rem;flex-shrink:0;}
+[data-theme="dark"] .step-num-badge{background:var(--g6);}
+.upload-zone{border:2px dashed var(--g3);border-radius:16px;padding:2.5rem 2rem;text-align:center;cursor:pointer;background:var(--g0);transition:all .2s;position:relative;margin-top:.75rem;}
+[data-theme="dark"] .upload-zone{background:var(--sur2);border-color:var(--g7);}
+.upload-zone:hover,.upload-zone.drag{background:var(--g1);border-color:var(--g5);}
+[data-theme="dark"] .upload-zone:hover{background:var(--bg2);}
+#fileInput{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.uz-icon{font-size:2rem;margin-bottom:.5rem;}
+.uz-main{font-weight:600;font-size:.92rem;color:var(--g7);margin-bottom:.2rem;}
+[data-theme="dark"] .uz-main{color:var(--g3);}
+.uz-sub{font-size:.78rem;color:var(--txt3);}
+.file-pill{display:none;align-items:center;gap:.75rem;background:var(--sur);border:1px solid var(--bdr);border-radius:9px;padding:.7rem 1rem;margin-top:.75rem;}
+.file-pill.show{display:flex;}
+.fp-name{font-size:.875rem;font-weight:500;}
+.fp-meta{font-size:.73rem;color:var(--txt3);}
+.fp-rm{margin-left:auto;border:none;background:none;cursor:pointer;color:var(--txt3);font-size:.95rem;padding:2px;}
+.demo-link{background:none;border:none;font-size:.78rem;color:var(--t5);cursor:pointer;font-family:'DM Sans',sans-serif;padding:0;margin-top:.6rem;display:inline-block;transition:color .2s;}
+[data-theme="dark"] .demo-link{color:var(--t3);}
+.demo-link:hover{color:var(--t6);}
+.cap-box{background:var(--a0);border:1px solid var(--a2);border-radius:10px;padding:.875rem 1.125rem;margin-top:1rem;display:flex;gap:.75rem;align-items:flex-start;}
+[data-theme="dark"] .cap-box{background:rgba(139,82,0,.12);border-color:rgba(240,170,58,.2);}
+.cap-icon{font-size:1rem;flex-shrink:0;margin-top:2px;}
+.cap-text{font-size:.78rem;color:var(--a6);line-height:1.65;}
+[data-theme="dark"] .cap-text{color:var(--a2);}
+.cap-text strong{font-weight:600;}
+.fasta-toggle{background:none;border:1px solid var(--bdr2);border-radius:7px;font-size:.78rem;color:var(--txt2);cursor:pointer;padding:5px 12px;margin-top:.6rem;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.fasta-toggle:hover{background:var(--bg2);}
+.fasta-box{display:none;background:var(--sur2);border:1px solid var(--bdr);border-radius:10px;padding:1rem 1.25rem;margin-top:.6rem;}
+.fasta-box.open{display:block;}
+.fasta-box pre{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--txt2);line-height:1.7;}
+.fasta-box .fh{color:var(--g6);}
+.model-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:.75rem;}
+.mc{border:2px solid var(--bdr);border-radius:14px;padding:1.25rem;cursor:pointer;transition:all .2s;background:var(--sur);position:relative;overflow:hidden;}
+.mc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px;}
+.mc.ds1::before{background:var(--t4);}
+.mc.ds2::before{background:var(--g5);}
+.mc.sel.ds1{border-color:var(--t3);background:var(--t0);}
+.mc.sel.ds2{border-color:var(--g4);background:var(--g0);}
+[data-theme="dark"] .mc{background:var(--sur2);}
+[data-theme="dark"] .mc.sel.ds1{background:rgba(20,176,140,.08);}
+[data-theme="dark"] .mc.sel.ds2{background:rgba(74,124,31,.1);}
+.mc-top{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem;}
+.mc-radio{width:17px;height:17px;border-radius:50%;border:2px solid var(--bdr2);background:var(--sur);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.mc.sel .mc-radio{border-color:var(--g5);}
+.mc-dot{width:7px;height:7px;border-radius:50%;background:var(--g5);display:none;}
+.mc.sel .mc-dot{display:block;}
+.mc-name{font-weight:600;font-size:.875rem;color:var(--txt);}
+.mc-badge{margin-left:auto;font-size:.64rem;font-weight:700;padding:2px 8px;border-radius:100px;letter-spacing:.04em;}
+.b-ds1{background:var(--t1);color:var(--t6);}
+.b-ds2{background:var(--g1);color:var(--g7);}
+[data-theme="dark"] .b-ds1{background:rgba(20,176,140,.15);color:var(--t2);}
+[data-theme="dark"] .b-ds2{background:rgba(74,124,31,.15);color:var(--g3);}
+.mc-desc{font-size:.8rem;color:var(--txt2);line-height:1.65;margin-bottom:.5rem;}
+.mc-meta{font-size:.7rem;font-family:'DM Mono',monospace;color:var(--txt3);}
+
+/* Device selector : compact inline row */
+.device-row{display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap;}
+.dc{border:1.5px solid var(--bdr);border-radius:9px;padding:.55rem 1rem;cursor:pointer;transition:all .2s;background:var(--sur);display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:500;color:var(--txt2);}
+[data-theme="dark"] .dc{background:var(--sur2);}
+.dc.sel{border-color:var(--g5);background:var(--g0);color:var(--g7);}
+[data-theme="dark"] .dc.sel{background:rgba(74,124,31,.12);color:var(--g3);}
+.dc:hover:not(.sel){border-color:var(--g4);}
+.dc-badge{font-size:.62rem;font-weight:700;padding:1px 6px;border-radius:100px;background:var(--g1);color:var(--g7);}
+[data-theme="dark"] .dc-badge{background:rgba(74,124,31,.2);color:var(--g3);}
+.dc-dot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--bdr2);flex-shrink:0;}
+.dc.sel .dc-dot{background:var(--g5);border-color:var(--g5);}
+
+.val-info{background:var(--sur2);border:1px solid var(--bdr);border-radius:9px;padding:.75rem 1rem;margin-top:1rem;font-size:.78rem;color:var(--txt2);line-height:1.6;}
+.val-info ul{padding-left:1.2rem;margin-top:.3rem;}
+.val-info li{margin-bottom:.2rem;}
+.run-row{display:flex;align-items:center;gap:1rem;margin-top:1.75rem;flex-wrap:wrap;}
+.btn-run{background:var(--g7);color:#fff;border:none;border-radius:10px;padding:13px 30px;font-size:.92rem;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;font-family:'DM Sans',sans-serif;}
+.btn-run:hover{background:var(--g6);transform:translateY(-1px);}
+.btn-run:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.sp{width:15px;height:15px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+.btn-run.loading .sp{display:block;}
+.btn-run.loading .ra{display:none;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.run-hint{font-size:.78rem;color:var(--txt3);}
+.prog{display:none;margin-top:1.25rem;background:var(--sur2);border:1px solid var(--bdr);border-radius:12px;padding:1.125rem 1.375rem;}
+.prog.on{display:block;}
+.prog-step{font-size:.82rem;color:var(--txt2);margin-bottom:.65rem;}
+.prog-step strong{color:var(--txt);}
+.prog-bg{background:var(--bg2);border-radius:100px;height:5px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--g6),var(--t4));width:0%;transition:width .4s ease;}
+
+/* RESULTS */
+.res-wrap{display:none;margin-top:3rem;padding-top:3rem;border-top:1px solid var(--bdr);}
+.res-wrap.on{display:block;}
+.res-hdr{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:.875rem;margin-bottom:1.5rem;}
+.res-title{font-family:'Lora',serif;font-size:1.35rem;font-weight:700;color:var(--txt);}
+.res-sub{font-size:.8rem;color:var(--txt3);margin-top:2px;font-family:'DM Mono',monospace;}
+.btn-dl{background:var(--t0);color:var(--t6);border:1.5px solid var(--t2);border-radius:8px;padding:8px 16px;font-size:.82rem;font-weight:500;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+[data-theme="dark"] .btn-dl{background:rgba(20,176,140,.1);color:var(--t2);border-color:rgba(61,201,168,.25);}
+.btn-dl:hover{background:var(--t1);}
+.sum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.875rem;margin-bottom:1.25rem;}
+.sc{background:var(--sur);border:1px solid var(--bdr);border-radius:12px;padding:.9rem 1rem;text-align:center;box-shadow:var(--shadow);}
+[data-theme="dark"] .sc{background:var(--sur2);}
+.sc-num{font-family:'Lora',serif;font-size:1.7rem;font-weight:700;}
+.sc-lbl{font-size:.7rem;color:var(--txt3);margin-top:2px;font-weight:500;}
+.charts-row{display:grid;grid-template-columns:1.4fr 1fr;gap:1.125rem;margin-bottom:1.125rem;}
+.cc{background:var(--sur);border:1px solid var(--bdr);border-radius:14px;padding:1.25rem;box-shadow:var(--shadow);}
+[data-theme="dark"] .cc{background:var(--sur2);}
+.cc h3{font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);margin-bottom:.875rem;}
+.tbl-wrap{background:var(--sur);border:1px solid var(--bdr);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);}
+[data-theme="dark"] .tbl-wrap{background:var(--sur2);}
+.tbl-hdr{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1.25rem;border-bottom:1px solid var(--bdr);}
+.tbl-hdr h3{font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);}
+.tbl-scroll{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:.83rem;}
+thead th{background:var(--sur2);padding:8px 14px;text-align:left;font-weight:600;font-size:.73rem;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--bdr);}
+tbody tr{border-bottom:1px solid var(--bdr);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:var(--bg);}
+tbody td{padding:9px 14px;color:var(--txt);}
+.pb{background:var(--bg2);border-radius:4px;height:5px;margin-top:3px;overflow:hidden;}
+.pf{height:100%;border-radius:4px;}
+.bdg{display:inline-flex;align-items:center;font-size:.67rem;font-weight:700;padding:2px 9px;border-radius:100px;}
+.bdg-r{background:var(--g1);color:var(--g7);}
+.bdg-nr{background:var(--bg2);color:var(--txt3);}
+[data-theme="dark"] .bdg-r{background:rgba(74,124,31,.2);color:var(--g3);}
+.cite-reminder{background:var(--a0);border:1px solid var(--a2);border-radius:9px;padding:.75rem 1rem;margin-top:1rem;font-size:.78rem;color:var(--a6);display:none;}
+[data-theme="dark"] .cite-reminder{background:rgba(139,82,0,.12);border-color:rgba(240,170,58,.2);color:var(--a2);}
+.cite-reminder.on{display:block;}
+
+/* DATASETS */
+.ds-sec{background:var(--bg2);border-top:1px solid var(--bdr);}
+[data-theme="dark"] .ds-sec{background:var(--sur);}
+.ds-wrap{max-width:1180px;margin:0 auto;padding:5.5rem 2.5rem;}
+.ds-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2.5rem;}
+.ds-card{background:var(--sur);border:1px solid var(--bdr);border-radius:18px;padding:1.75rem;position:relative;overflow:hidden;}
+[data-theme="dark"] .ds-card{background:var(--sur2);}
+.ds-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:5px 0 0 5px;}
+.ds-card.ds1::before{background:linear-gradient(180deg,var(--t4),var(--t5));}
+.ds-card.ds2::before{background:linear-gradient(180deg,var(--g5),var(--g6));}
+.ds-tag{font-size:.67rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;}
+.ds-card.ds1 .ds-tag{color:var(--t5);}
+.ds-card.ds2 .ds-tag{color:var(--g6);}
+[data-theme="dark"] .ds-card.ds1 .ds-tag{color:var(--t3);}
+[data-theme="dark"] .ds-card.ds2 .ds-tag{color:var(--g4);}
+.ds-name{font-family:'Lora',serif;font-size:1.05rem;font-weight:700;color:var(--txt);margin-bottom:.75rem;}
+.ds-facts{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem;}
+.ds-fact{display:flex;align-items:baseline;gap:.5rem;font-size:.82rem;}
+.df-key{color:var(--txt3);font-weight:500;min-width:130px;}
+.df-val{color:var(--txt);font-weight:600;}
+.ds-btns{display:flex;gap:.5rem;flex-wrap:wrap;}
+.ds-expand-btn{background:none;border:1px solid var(--bdr2);border-radius:7px;font-size:.76rem;color:var(--txt2);cursor:pointer;padding:5px 12px;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.ds-expand-btn:hover{background:var(--bg);}
+.ds-dl-btn{background:var(--g0);border:1px solid var(--g3);border-radius:7px;font-size:.76rem;color:var(--g7);cursor:pointer;padding:5px 12px;font-family:'DM Sans',sans-serif;transition:all .2s;font-weight:500;display:inline-flex;align-items:center;gap:4px;text-decoration:none;}
+[data-theme="dark"] .ds-dl-btn{background:rgba(74,124,31,.12);border-color:var(--g7);color:var(--g3);}
+.ds-dl-btn:hover{background:var(--g1);}
+.ds-detail{display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--bdr);}
+.ds-detail.open{display:block;}
+.ds-detail p{font-size:.8rem;color:var(--txt2);line-height:1.75;}
+
+/* INSTALLATION */
+.install-sec{background:var(--g9);color:#fff;}
+[data-theme="dark"] .install-sec{background:#060c03;}
+.install-wrap{max-width:1180px;margin:0 auto;padding:5.5rem 2.5rem;}
+.i-tag{font-size:.69rem;letter-spacing:.12em;text-transform:uppercase;color:var(--g4);font-weight:700;margin-bottom:.6rem;}
+.i-title{font-family:'Lora',serif;font-size:2rem;font-weight:700;margin-bottom:.75rem;line-height:1.15;color:#fff;}
+.i-lead{font-size:.93rem;color:var(--g2);line-height:1.8;max-width:640px;margin-bottom:3rem;}
+.itabs{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+.itab{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:7px 16px;font-size:.8rem;font-weight:600;cursor:pointer;color:var(--g2);transition:all .2s;font-family:'DM Sans',sans-serif;}
+.itab.act{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.28);color:#fff;}
+.ipanel{display:none;}
+.ipanel.on{display:block;}
+.i2col{display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+.cb-lbl{font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--g4);font-weight:700;margin-bottom:.6rem;}
+.cblk{background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.07);border-radius:11px;padding:1.125rem 1.375rem;overflow-x:auto;font-family:'DM Mono',monospace;font-size:.78rem;line-height:1.9;color:var(--g2);margin-bottom:1.1rem;}
+.kw{color:var(--g4);}.cm{color:#5a6e50;font-style:italic;}.str{color:var(--a2);}.fl{color:var(--t2);}.pr{color:var(--g6);user-select:none;}
+.req-boxes{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;}
+.req-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:1.25rem;}
+.req-box-title{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--g4);font-weight:700;margin-bottom:.875rem;}
+.req-row{display:flex;justify-content:space-between;font-size:.8rem;padding:.3rem 0;border-bottom:1px solid rgba(255,255,255,.05);}
+.req-row:last-child{border-bottom:none;}
+.rk{color:var(--g2);}.rv{color:#fff;font-weight:500;}
+.isteps{display:flex;flex-direction:column;gap:.6rem;}
+.istep{display:flex;gap:.875rem;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:11px;padding:.875rem 1.125rem;}
+.isn{width:26px;height:26px;border-radius:50%;background:var(--g8);color:var(--g3);font-size:.71rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'DM Mono',monospace;}
+.ist{font-size:.83rem;color:var(--g1);line-height:1.65;}
+.ist strong{color:#fff;}
+.ist code{font-family:'DM Mono',monospace;background:rgba(0,0,0,.3);padding:1px 5px;border-radius:3px;font-size:.72rem;color:var(--a1);}
+
+/* ABOUT */
+.about-sec{background:var(--sur);border-top:1px solid var(--bdr);}
+.about-wrap{max-width:1180px;margin:0 auto;padding:5.5rem 2.5rem;}
+.about-cols{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:2.5rem;}
+.about-text p{font-size:.92rem;color:var(--txt2);line-height:1.85;margin-bottom:1rem;}
+.author-block{background:var(--sur2);border:1px solid var(--bdr);border-radius:16px;padding:1.5rem;}
+[data-theme="dark"] .author-block{background:var(--bg2);}
+.cite-box{background:var(--sur2);border:1px solid var(--bdr);border-radius:14px;padding:1.5rem;margin-top:0;}
+[data-theme="dark"] .cite-box{background:var(--bg2);}
+.cite-box-title{font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);margin-bottom:.875rem;display:flex;align-items:center;gap:.5rem;}
+.cite-text{font-size:.82rem;color:var(--txt2);line-height:1.75;font-family:'DM Mono',monospace;background:var(--bg);border:1px solid var(--bdr);border-radius:8px;padding:.875rem 1rem;margin-bottom:.875rem;}
+[data-theme="dark"] .cite-text{background:var(--sur);}
+.cite-pending{font-size:.76rem;color:var(--txt3);font-style:italic;margin-bottom:.875rem;}
+.cite-btns{display:flex;gap:.5rem;}
+.cite-btn{background:var(--bg2);border:1px solid var(--bdr2);border-radius:7px;padding:6px 14px;font-size:.78rem;font-weight:500;cursor:pointer;color:var(--txt2);transition:all .2s;font-family:'DM Sans',sans-serif;}
+.cite-btn:hover{background:var(--g1);color:var(--g7);}
+[data-theme="dark"] .cite-btn:hover{background:rgba(74,124,31,.15);color:var(--g3);}
+.contrib-wrap{margin-top:1.75rem;padding-top:1.5rem;border-top:1px solid var(--bdr);}
+.contrib-title{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txt3);margin-bottom:.6rem;}
+.contrib-list{font-size:.84rem;color:var(--txt2);line-height:2.1;}
+.cn{color:var(--txt);font-weight:500;}
+.cn-sup{font-size:.62rem;color:var(--txt3);vertical-align:super;line-height:0;margin-left:1px;}
+.contrib-legend{margin-top:.45rem;font-size:.71rem;color:var(--txt3);display:flex;gap:1.25rem;flex-wrap:wrap;}
+.contrib-affil{margin-top:.5rem;font-size:.77rem;color:var(--txt3);line-height:1.65;}
+
+/* FAQ */
+.faq-sec{background:var(--bg2);border-top:1px solid var(--bdr);}
+[data-theme="dark"] .faq-sec{background:var(--sur);}
+.faq-wrap{max-width:780px;margin:0 auto;padding:5.5rem 2.5rem;}
+.faq-item{border-bottom:1px solid var(--bdr);}
+.faq-q{width:100%;background:none;border:none;text-align:left;padding:1.125rem 0;font-size:.92rem;font-weight:600;color:var(--txt);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:1rem;font-family:'DM Sans',sans-serif;transition:color .2s;}
+.faq-q:hover{color:var(--g6);}
+[data-theme="dark"] .faq-q:hover{color:var(--g4);}
+.faq-chevron{font-size:.9rem;color:var(--txt3);transition:transform .3s;flex-shrink:0;}
+.faq-a{display:none;padding-bottom:1.125rem;font-size:.875rem;color:var(--txt2);line-height:1.8;}
+.faq-item.open .faq-chevron{transform:rotate(180deg);}
+.faq-item.open .faq-a{display:block;}
+
+/* FOOTER */
+footer{background:var(--g9);color:var(--g3);padding:3rem 2.5rem;text-align:center;}
+[data-theme="dark"] footer{background:#040803;}
+.fl-logo{font-family:'Lora',serif;font-size:1.15rem;color:var(--g3);margin-bottom:.4rem;font-weight:700;}
+.fl-sub{font-size:.8rem;color:var(--g5);margin-bottom:1rem;}
+.fl-links{display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem;flex-wrap:wrap;}
+.fl-links a{text-decoration:none;color:var(--g4);font-size:.8rem;transition:color .2s;}
+.fl-links a:hover{color:var(--g3);}
+.fl-copy{font-size:.74rem;color:var(--g6);}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding:100px 1.5rem 56px;}
+  .hero-grid{display:none;}
+  .hero h1{font-size:2.25rem;}
+  .stats-inner{grid-template-columns:repeat(2,1fr);}
+  .why-cols,.about-cols,.ds-grid,.i2col,.charts-row,.model-grid,.req-boxes{grid-template-columns:1fr;}
+  .sum-grid{grid-template-columns:repeat(2,1fr);}
+  .pipe-row{grid-template-columns:1fr;}
+  .pipe-arrow{transform:rotate(90deg);padding:.25rem 0;display:flex;justify-content:center;}
+}
+
+/* SCROLL ANIMATION */
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <a href="#" class="nav-logo">
+      <svg class="nav-logo-icon" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="8" fill="#1d3d08"/>
+        <ellipse cx="16" cy="16" rx="7" ry="11" fill="none" stroke="#89b84a" stroke-width="1.5"/>
+        <path d="M16 5 Q20 11 16 17 Q12 11 16 5Z" fill="#4a7c1f"/>
+        <path d="M16 15 Q22 13 24 19" stroke="#aece74" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M16 18 Q10 16 8 22" stroke="#aece74" stroke-width="1.4" stroke-linecap="round"/>
+        <circle cx="16" cy="26" r="1.5" fill="#4a7c1f"/>
+      </svg>
+      <span class="nav-logo-text">PlantDRP</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#predict">Predict</a>
+      <a href="#datasets">Datasets</a>
+      <a href="#install">Installation</a>
+      <a href="#about">About</a>
+    </nav>
+  </div>
+  <div class="nav-right">
+    <span class="nav-ver">v1.0.0</span>
+    <a href="https://github.com/PrabinaMeher/plantDRP" target="_blank" class="nav-gh">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      GitHub
+    </a>
+    <span class="nav-pip">pip install plantdrp</span>
+    <button class="theme-toggle" id="themeBtn" title="Toggle dark mode">🌙</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section style="background:var(--bg);">
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-inst">🌿 ICAR-IASRI · New Delhi</div>
+    <h1>Prediction of Plant<br/><span>Disease Resistance</span><br/>Proteins</h1>
+    <p class="hero-sub" style="margin-top:.75rem;">
+      PlantDRP predicts disease resistance proteins in plants from protein sequences alone,
+      making large-scale screening accessible without experimental validation.
+    </p>
+    <div class="hero-btns">
+      <a href="#predict" class="btn-main">▶ Predict Now</a>
+      <a href="#datasets" class="btn-ghost">Explore Datasets</a>
+    </div>
+  </div>
+  <div class="hero-grid" aria-hidden="true">
+    <div class="hg-cell" style="background:#e8f5d6;border-color:#cce09e;">🌱</div>
+    <div class="hg-cell" style="background:#e0f7f2;border-color:#b0eadb;">🧬</div>
+    <div class="hg-cell" style="background:#fff6e5;border-color:#fce3b0;">🦠</div>
+    <div class="hg-cell" style="background:#e8f5d6;border-color:#cce09e;">🔬</div>
+    <div class="hg-cell" style="background:#e0f7f2;border-color:#b0eadb;">🌿</div>
+    <div class="hg-cell" style="background:#e8f5d6;border-color:#cce09e;">🧪</div>
+    <div class="hg-cell" style="background:#fff6e5;border-color:#fce3b0;">🌾</div>
+    <div class="hg-cell" style="background:#e0f7f2;border-color:#b0eadb;">⚗️</div>
+    <div class="hg-cell" style="background:#e8f5d6;border-color:#cce09e;">🌻</div>
+    <div class="hg-cell" style="background:#fff6e5;border-color:#fce3b0;">💊</div>
+    <div class="hg-cell" style="background:#e0f7f2;border-color:#b0eadb;">🔗</div>
+    <div class="hg-cell" style="background:#e8f5d6;border-color:#cce09e;">📊</div>
+  </div>
+</div>
+</section>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div>
+      <div class="stat-val">ProtT5-XL-U50</div>
+      <div class="stat-key">Protein Language Model</div>
+    </div>
+    <div>
+      <div class="stat-val">1024-dim</div>
+      <div class="stat-key">Embeddings</div>
+    </div>
+    <div>
+      <div class="stat-val">2 Models</div>
+      <div class="stat-key">DS1 · DS2</div>
+    </div>
+  </div>
+</div>
+
+<!-- WHY R-PROTEINS -->
+<div class="why-sec">
+  <div class="why-wrap">
+    <div class="fade-up">
+      <div class="sec-tag">Background</div>
+      <h2 class="sec-title">Why Plant Disease Resistance Proteins?</h2>
+    </div>
+    <div class="why-cols">
+      <div class="why-text fade-up">
+        <p>Plant diseases are responsible for significant yield losses in agricultural crops worldwide, threatening food security for a growing global population. At the heart of plant immunity are <strong>disease resistance (R) proteins</strong> : a diverse class of immune receptors that enable plants to detect and respond to pathogens including bacteria, fungi, viruses, oomycetes, and nematodes.</p>
+        <p>R proteins operate through mechanisms such as <strong>effector-triggered immunity (ETI)</strong> and the <strong>hypersensitive response (HR)</strong>, rapidly containing pathogen spread. The largest and most well-characterised class are the <strong>NLR (Nucleotide-binding Leucine-rich Repeat)</strong> proteins, which directly or indirectly recognise pathogen-derived effectors.</p>
+        <p>Experimental identification of R proteins is resource-intensive and time-consuming. With thousands of plant genomes now being sequenced, there is a pressing need for accurate, scalable computational tools to annotate R proteins directly from sequence data : enabling faster resistance breeding and reduced reliance on chemical pesticides.</p>
+      </div>
+      <div class="why-boxes fade-up">
+        <div class="kb">
+          <span class="kb-icon">🛡️</span>
+          <div>
+            <div class="kb-title">NLR Proteins : the dominant class</div>
+            <div class="kb-text">NLR proteins carry an NBS domain for immune signalling and an LRR domain for pathogen recognition. Hundreds to thousands exist per plant genome, forming the primary line of intracellular defence.</div>
+          </div>
+        </div>
+        <div class="kb">
+          <span class="kb-icon">🌾</span>
+          <div>
+            <div class="kb-title">Crop protection at scale</div>
+            <div class="kb-text">PlantDRP screens entire proteomes for R proteins computationally, replacing weeks of wet-lab annotation and enabling genome-wide resistance gene discovery in newly sequenced crops.</div>
+          </div>
+        </div>
+        <div class="kb">
+          <span class="kb-icon">🔬</span>
+          <div>
+            <div class="kb-title">Sequence-only prediction</div>
+            <div class="kb-text">No structural data, alignment, or homology required. PlantDRP works from raw amino acid sequence alone, using ProtT5 protein language model embeddings to capture evolutionary and functional information.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PIPELINE -->
+<div class="pipe-sec">
+  <div class="pipe-wrap fade-up">
+    <div class="sec-tag">How it works</div>
+    <h2 class="sec-title">The Prediction Pipeline</h2>
+    <div class="pipe-row">
+      <div class="pipe-step">
+        <div class="ps-num">Step 01</div>
+        <div class="ps-icon">📄</div>
+        <div class="ps-name">Upload FASTA</div>
+        <div class="ps-desc">Protein sequences parsed and validated</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="ps-num">Step 02</div>
+        <div class="ps-icon">🤖</div>
+        <div class="ps-name">ProtT5 Embedding</div>
+        <div class="ps-desc">1024-dim vector per sequence via ProtT5-XL-U50</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="ps-num">Step 03</div>
+        <div class="ps-icon">⚙️</div>
+        <div class="ps-name">SVM Inference</div>
+        <div class="ps-desc">DS1 or DS2 SVM classifier predicts probability</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="ps-num">Step 04</div>
+        <div class="ps-icon">📊</div>
+        <div class="ps-name">Results</div>
+        <div class="ps-desc">Probability scores, charts, downloadable CSV</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PREDICT TOOL -->
+<div id="predict" class="predict-sec">
+  <div class="predict-wrap">
+    <div class="fade-up">
+      <div class="sec-tag">Analysis Tool</div>
+      <h2 class="sec-title">Predict R-Proteins</h2>
+      <p class="sec-lead" style="margin-bottom:2rem;">Upload a protein FASTA file and select a model to obtain per-sequence disease resistance probability scores.</p>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="fade-up">
+      <span class="step-lbl"><span class="step-num-badge">1</span>Upload Protein FASTA</span>
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" id="fileInput" accept=".fasta,.fa,.faa,.txt"/>
+        <div class="uz-icon">🧬</div>
+        <div class="uz-main">Drop FASTA file here or click to browse</div>
+        <div class="uz-sub">Protein sequences only · .fasta .fa .faa</div>
+      </div>
+      <div class="file-pill" id="filePill">
+        <span style="font-size:1.1rem;">🗂️</span>
+        <div><div class="fp-name" id="fpName">:</div><div class="fp-meta" id="fpMeta">:</div></div>
+        <button class="fp-rm" id="fpRm">✕</button>
+      </div>
+      <button class="demo-link" onclick="loadDemo()">↓ Load demo sequences to test</button>
+      <div class="cap-box">
+        <span class="cap-icon">ℹ️</span>
+        <div class="cap-text">
+          <strong>Sequence capacity guide</strong><br/>
+          1–20 sequences: CPU is sufficient (~10–30 s per sequence).<br/>
+          20–100 sequences: GPU recommended.<br/>
+          100+ sequences: Use the CLI with GPU. ProtT5 embedding is the bottleneck.
+        </div>
+      </div>
+      <button class="fasta-toggle" onclick="toggleFasta()">▸ Show expected FASTA format</button>
+      <div class="fasta-box" id="fastaBox">
+        <pre><span class="fh">>AT1G12220.1 Arabidopsis thaliana NLR protein</span>
+MSDNLKQELKELIEQLKKNPAVVKQFLDDIQKEMKDLEDELEAQMKELKDKIEALRQ...
+<span class="fh">>Os01g0700900.1 Oryza sativa resistance protein</span>
+MASTQQLLLAAAVVVKKNPAVVKQFLDDIQKEMKDLEDELEAQMKELKDKIEALRQ...</pre>
+        <div style="margin-top:.6rem;font-size:.75rem;color:var(--txt3);">
+          Each entry: one header line starting with <code style="font-family:'DM Mono',monospace;">&gt;</code> followed by the amino acid sequence.
+          Minimum sequence length: 50 amino acids.
+        </div>
+      </div>
+      <div class="val-info" style="margin-top:.75rem;">
+        <strong>Input requirements</strong>
+        <ul>
+          <li>Protein (amino acid) sequences only : nucleotide sequences are not supported</li>
+          <li>Minimum sequence length: 50 amino acids</li>
+          <li>Sequences with non-standard residues (B, J, O, U, X, Z) will be flagged</li>
+          <li>Standard FASTA format with header lines starting with &gt;</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="fade-up" style="margin-top:2rem;">
+      <span class="step-lbl"><span class="step-num-badge">2</span>Select Model</span>
+      <div class="model-grid">
+        <div class="mc ds1" id="mc-ds1" onclick="selModel('ds1')">
+          <div class="mc-top">
+            <div class="mc-radio"><div class="mc-dot"></div></div>
+            <span class="mc-name">DS1 : Experimentally Validated</span>
+            <span class="mc-badge b-ds1">Conservative</span>
+          </div>
+          <div class="mc-desc">SVM trained on experimentally confirmed disease resistance proteins. High precision, conservative predictions.</div>
+        </div>
+        <div class="mc ds2 sel" id="mc-ds2" onclick="selModel('ds2')">
+          <div class="mc-top">
+            <div class="mc-radio"><div class="mc-dot"></div></div>
+            <span class="mc-name">DS2 : Extended Database</span>
+            <span class="mc-badge b-ds2">★ Recommended</span>
+          </div>
+          <div class="mc-desc">SVM trained on a larger, curated dataset from PRGdb 4.0, MusaRgeneDB, and RefPlantNLR. Broader coverage and higher accuracy.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 : Device (compact inline) -->
+    <div class="fade-up" style="margin-top:2rem;">
+      <span class="step-lbl"><span class="step-num-badge">3</span>Select Device</span>
+      <div class="device-row">
+        <div class="dc sel" id="dc-auto" onclick="selDevice('auto')">
+          <div class="dc-dot"></div>
+          Auto Detect
+          <span class="dc-badge">★ Recommended</span>
+        </div>
+        <div class="dc" id="dc-cpu" onclick="selDevice('cpu')">
+          <div class="dc-dot"></div>
+          CPU
+          <span class="dc-badge" style="background:var(--t1);color:var(--t6);">Universal</span>
+        </div>
+        <div class="dc" id="dc-cuda" onclick="selDevice('cuda')">
+          <div class="dc-dot"></div>
+          NVIDIA GPU (CUDA)
+          <span class="dc-badge" style="background:var(--a1);color:var(--a6);">Fast</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 : Run -->
+    <div class="fade-up" style="margin-top:2rem;">
+      <span class="step-lbl"><span class="step-num-badge">4</span>Run Analysis</span>
+      <div class="run-row">
+        <button class="btn-run" id="runBtn" onclick="runAnalysis()" disabled>
+          <div class="sp"></div><span class="ra">▶</span> Run Analysis
+        </button>
+        <span class="run-hint">Pipeline: FASTA parse → ProtT5 embedding → SVM inference</span>
+      </div>
+      <div class="prog" id="prog">
+        <div class="prog-step" id="pStep"><strong>Ready</strong></div>
+        <div class="prog-bg"><div class="prog-fill" id="pFill"></div></div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="res-wrap" id="resWrap">
+      <div class="res-hdr">
+        <div>
+          <div class="res-title">Prediction Results</div>
+          <div class="res-sub" id="resSub">:</div>
+        </div>
+        <button class="btn-dl" onclick="downloadCSV()">⬇ Download CSV</button>
+      </div>
+      <div class="sum-grid">
+        <div class="sc"><div class="sc-num" id="stTotal" style="color:var(--txt)">:</div><div class="sc-lbl">Sequences</div></div>
+        <div class="sc"><div class="sc-num" id="stDR" style="color:var(--g6)">:</div><div class="sc-lbl">DR Proteins</div></div>
+        <div class="sc"><div class="sc-num" id="stNDR" style="color:var(--txt3)">:</div><div class="sc-lbl">Non-DR Proteins</div></div>
+        <div class="sc"><div class="sc-num" id="stAvg" style="color:var(--t5)">:</div><div class="sc-lbl">Avg. DR Probability</div></div>
+      </div>
+      <div class="charts-row">
+        <div class="cc"><h3>DR Probability per Sequence</h3><canvas id="barChart" height="220"></canvas></div>
+        <div class="cc"><h3>Classification Split</h3><canvas id="donutChart" height="220"></canvas></div>
+      </div>
+      <div class="tbl-wrap">
+        <div class="tbl-hdr">
+          <h3>Per-Sequence Results</h3>
+          <span style="font-size:.75rem;color:var(--txt3);">Threshold: P ≥ 0.50</span>
+        </div>
+        <div class="tbl-scroll">
+          <table>
+            <thead><tr><th>#</th><th>Sequence ID</th><th>Length (aa)</th><th>DR Probability</th><th>Prediction</th></tr></thead>
+            <tbody id="resBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="cite-reminder on">
+        📋 If you use these results in your research, please cite PlantDRP : see the <a href="#about" style="color:var(--a6);font-weight:600;">About & Citation</a> section.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DATASETS -->
+<div id="datasets" class="ds-sec">
+  <div class="ds-wrap">
+    <div class="fade-up">
+      <div class="sec-tag">Training Data</div>
+      <h2 class="sec-title">Datasets</h2>
+      <p class="sec-lead">Two curated datasets were used to train the SVM models. Both are available for download below.</p>
+    </div>
+    <div class="ds-grid">
+      <div class="ds-card ds1 fade-up">
+        <div class="ds-tag">DS1 · Experimentally Validated</div>
+        <div class="ds-name">Experimentally Validated Set</div>
+        <div class="ds-facts">
+          <div class="ds-fact"><span class="df-key">Positive (R-proteins)</span><span class="df-val">199 sequences</span></div>
+          <div class="ds-fact"><span class="df-key">Negative (non-R)</span><span class="df-val">199 sequences</span></div>
+          <div class="ds-fact"><span class="df-key">Total</span><span class="df-val">398 sequences</span></div>
+          <div class="ds-fact"><span class="df-key">Source</span><span class="df-val">PlantDRPpred</span></div>
+          <div class="ds-fact"><span class="df-key">Split (train/test)</span><span class="df-val">80% / 20%</span></div>
+        </div>
+        <div class="ds-btns">
+          <button class="ds-expand-btn" onclick="toggleDs('ds1detail')">▸ View details</button>
+          <a class="ds-dl-btn" href="Dataset/DS1.zip" download>⬇ Download DS1</a>
+        </div>
+        <div class="ds-detail" id="ds1detail">
+          <p>DS1 was adopted directly from the PlantDRPpred tool and comprised 199 experimentally validated plant R-proteins as positive sequences and 199 non-R-proteins as negative sequences, yielding a balanced dataset of 398 sequences. The dataset was partitioned into training and test sets in an 80:20 ratio, resulting in 160 positive and 160 negative sequences in the training set, and 39 positive and 39 negative in the independent test set.</p>
+        </div>
+      </div>
+      <div class="ds-card ds2 fade-up">
+        <div class="ds-tag">DS2 · Extended Database · Recommended</div>
+        <div class="ds-name">Extended Database Set</div>
+        <div class="ds-facts">
+          <div class="ds-fact"><span class="df-key">Positive (R-proteins)</span><span class="df-val">642 sequences (after CD-HIT)</span></div>
+          <div class="ds-fact"><span class="df-key">Negative (non-R)</span><span class="df-val">9,759 sequences</span></div>
+          <div class="ds-fact"><span class="df-key">Plant species</span><span class="df-val">33 species</span></div>
+          <div class="ds-fact"><span class="df-key">Sources</span><span class="df-val">PRGdb 4.0 · MusaRgeneDB · RefPlantNLR</span></div>
+          <div class="ds-fact"><span class="df-key">Redundancy cutoff</span><span class="df-val">≤40% similarity (CD-HIT)</span></div>
+        </div>
+        <div class="ds-btns">
+          <button class="ds-expand-btn" onclick="toggleDs('ds2detail')">▸ View details</button>
+          <a class="ds-dl-btn" href="Dataset/DS2.zip" download>⬇ Download DS2</a>
+        </div>
+        <div class="ds-detail" id="ds2detail">
+          <p>R-protein sequences for DS2 were retrieved from three curated databases: PRGdb 4.0 (152 sequences, 33 plant species), MusaRgeneDB (2,424 sequences after filtering), and RefPlantNLR (481 experimentally validated NLR immune receptors). After filtering and applying CD-HIT at ≤40% similarity, the final dataset comprised 642 positive and 9,759 negative sequences. Training used 500 positive + 500 negative sequences; the independent test set used 142 positive + 142 negative sequences.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INSTALLATION -->
+<div id="install" class="install-sec">
+  <div class="install-wrap">
+    <div class="i-tag">Local Installation · CLI · Streamlit UI</div>
+    <h2 class="i-title">Run PlantDRP Locally</h2>
+    <p class="i-lead">PlantDRP is pip-installable. After installation you get a command-line interface for scripted workflows and a Streamlit web UI that runs in your local browser.</p>
+    <div class="itabs">
+      <button class="itab act" onclick="switchInstall('cli',this)">CLI Usage</button>
+      <button class="itab" onclick="switchInstall('reqs',this)">System Requirements</button>
+    </div>
+    <div class="ipanel on" id="ipanel-cli">
+      <div class="i2col">
+        <div>
+          <div class="cb-lbl">Basic prediction</div>
+          <div class="cblk"><span class="pr">$</span> plantdrp predict <span class="fl">--input</span> proteins.fasta <span class="fl">--model</span> <span class="str">ds2</span> <span class="fl">--output</span> results.csv</div>
+          <div class="cb-lbl">All options</div>
+          <div class="cblk" style="font-size:.74rem;"><span class="fl">--input</span>       <span class="cm">Path to FASTA file</span><br><span class="fl">--model</span>       <span class="str">ds1</span> | <span class="str">ds2</span>  <span class="cm">(default: ds2)</span><br><span class="fl">--output</span>      <span class="cm">Output file path</span><br><span class="fl">--format</span>      <span class="str">csv</span> | <span class="str">tsv</span> | <span class="str">json</span><br><span class="fl">--threshold</span>   <span class="cm">0–1, default 0.5</span><br><span class="fl">--device</span>      <span class="str">cpu</span> | <span class="str">cuda</span> | <span class="str">mps</span><br><span class="fl">--batch-size</span>  <span class="cm">Sequences per batch (default: 4)</span></div>
+        </div>
+        <div>
+          <div class="isteps">
+            <div class="istep"><div class="isn">✓</div><div class="ist"><strong>Best for large datasets</strong> : handles hundreds of sequences in batch mode.</div></div>
+            <div class="istep"><div class="isn">✓</div><div class="ist"><strong>Scriptable</strong> : integrate into Snakemake workflows or shell scripts.</div></div>
+            <div class="istep"><div class="isn">✓</div><div class="ist"><strong>Embedding cache</strong> : use <code>--save-embeddings</code> and <code>--no-embed</code> to avoid redundant computation.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ipanel" id="ipanel-reqs">
+      <div class="req-boxes">
+        <div class="req-box">
+          <div class="req-box-title">Minimum : CPU Only</div>
+          <div class="req-row"><span class="rk">Python</span><span class="rv">3.9 or higher</span></div>
+          <div class="req-row"><span class="rk">RAM</span><span class="rv">16 GB</span></div>
+          <div class="req-row"><span class="rk">Storage</span><span class="rv">~5 GB (ProtT5 weights)</span></div>
+          <div class="req-row"><span class="rk">OS</span><span class="rv">Windows / Linux / macOS</span></div>
+          <div class="req-row"><span class="rk">Embedding speed</span><span class="rv">~10–30 s per sequence</span></div>
+        </div>
+        <div class="req-box">
+          <div class="req-box-title">Recommended : GPU</div>
+          <div class="req-row"><span class="rk">GPU</span><span class="rv">NVIDIA, 8 GB+ VRAM</span></div>
+          <div class="req-row"><span class="rk">CUDA</span><span class="rv">11.8 or higher</span></div>
+          <div class="req-row"><span class="rk">RAM</span><span class="rv">32 GB</span></div>
+          <div class="req-row"><span class="rk">Storage</span><span class="rv">~5 GB</span></div>
+          <div class="req-row"><span class="rk">Embedding speed</span><span class="rv">~1–3 s per sequence</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div id="about" class="about-sec">
+  <div class="about-wrap">
+    <div class="fade-up">
+      <div class="sec-tag">About & Citation</div>
+      <h2 class="sec-title">About PlantDRP</h2>
+    </div>
+    <div class="about-cols fade-up">
+      <div class="about-text">
+        <p>PlantDRP was developed at the <strong>Division of Statistical Genetics, ICAR-Indian Agricultural Statistics Research Institute (ICAR-IASRI)</strong>, PUSA, New Delhi, India.</p>
+        <p>The tool applies ProtT5-XL-U50 protein language model embeddings with a Support Vector Machine classifier for sequence-based prediction of plant disease resistance proteins. It requires no structural information or sequence alignment, making it accessible for large-scale genome annotation.</p>
+        <p><em>The associated manuscript has been submitted for publication. The citation will be updated upon acceptance.</em></p>
+        <div style="margin-top:1rem;font-size:.82rem;color:var(--txt3);">
+          ✉ <a href="mailto:meherprabin@yahoo.com" style="color:var(--g6);text-decoration:none;">meherprabin@yahoo.com</a>
+          
+          &nbsp;·&nbsp;
+          <a href="https://github.com/PrabinaMeher/plantDRP" target="_blank" style="color:var(--g6);text-decoration:none;">GitHub</a>
+        </div>
+      </div>
+      <div class="cite-box">
+        <div class="cite-box-title">📋 Citation</div>
+        <div class="cite-pending">Manuscript submitted : provisional citation:</div>
+        <div class="cite-text">Pradhan UK†, Gupta A†, Kumar S, Kumari A, Das R, Kumar A, Meher PK*. PlantDRP: Leveraging ProtT5 embeddings and support vector machine for prediction of plant disease resistance proteins. [Manuscript submitted, 2026]</div>
+        <div class="cite-btns">
+          <button class="cite-btn" onclick="copyCite()">📋 Copy Citation</button>
+          <button class="cite-btn" onclick="copyBibtex()">{ } Copy BibTeX</button>
+        </div>
+      </div>
+    </div>
+    <div class="contrib-wrap fade-up">
+      <div class="contrib-title">Contributors</div>
+      <div class="contrib-list">
+        <span class="cn">Upendra Kumar Pradhan</span><span class="cn-sup">†</span>,
+        <span class="cn">Aanchal Gupta</span><span class="cn-sup">†</span>,
+        <span class="cn">Shubham Kumar</span>,
+        <span class="cn">Arzoo Kumari</span>,
+        <span class="cn">Ritwika Das</span>,
+        <span class="cn">Anil Kumar</span>,
+        <span class="cn">Prabina Kumar Meher</span><span class="cn-sup">*</span>
+      </div>
+      <div class="contrib-legend">
+        <span>† Joint first author</span>
+        <span>* Corresponding author</span>
+      </div>
+      <div class="contrib-affil">ICAR-Indian Agricultural Statistics Research Institute (ICAR-IASRI) · PUSA, New Delhi – 110012, India</div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq-sec">
+  <div class="faq-wrap">
+    <div class="fade-up">
+      <div class="sec-tag">FAQ</div>
+      <h2 class="sec-title">Frequently Asked Questions</h2>
+    </div>
+    <div style="margin-top:2rem;">
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Which model should I use : DS1 or DS2?<span class="faq-chevron">▾</span></button><div class="faq-a">We recommend DS2 for general use. DS2 is trained on a larger and more diverse dataset and achieves higher accuracy across all evaluation settings (AUROC 0.9812, AUPRC 0.9864 on the independent test set). DS1 may be preferred if you specifically want predictions conservative to experimentally validated R-proteins only.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Why is prediction slow?<span class="faq-chevron">▾</span></button><div class="faq-a">The bottleneck is ProtT5 embedding generation. On CPU, embedding takes approximately 10–30 seconds per sequence. The SVM prediction itself is near-instant. For faster inference, use a GPU (NVIDIA, CUDA 11.8+).</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How many sequences can I run at once?<span class="faq-chevron">▾</span></button><div class="faq-a">There is no hard limit. For 1–20 sequences, the web interface on CPU is practical. For 20–100 sequences, a GPU is recommended. For 100+ sequences, use the CLI with GPU acceleration.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">My sequence has non-standard amino acids (X, B, U etc.) : what happens?<span class="faq-chevron">▾</span></button><div class="faq-a">Sequences containing non-standard residues (B, J, O, U, X, Z) will be flagged during input validation. These residues were excluded during model training, so predictions may be unreliable.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Can I use nucleotide sequences?<span class="faq-chevron">▾</span></button><div class="faq-a">No. PlantDRP accepts protein (amino acid) sequences only. First translate nucleotide sequences using a tool such as TransDecoder or EMBOSS Transeq.</div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">How do I cite PlantDRP?<span class="faq-chevron">▾</span></button><div class="faq-a">The manuscript has been submitted for publication. Please use the provisional citation in the About section and update it once the paper is published.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fl-logo">🌿 PlantDRP</div>
+  <div class="fl-sub">Prediction of Plant Disease Resistance Proteins · ICAR-IASRI, New Delhi</div>
+  <div class="fl-links">
+    <a href="#predict">Predict</a>
+    <a href="#datasets">Datasets</a>
+    <a href="#install">Installation</a>
+    <a href="#about">About</a>
+    <a href="https://github.com/PrabinaMeher/plantDRP" target="_blank">GitHub</a>
+  </div>
+  <div class="fl-copy">Manuscript under review. For queries: meherprabin@yahoo.com · © 2025 ICAR-IASRI · For research use only.</div>
+</footer>
+
+<script>
+// Theme
+const themeBtn = document.getElementById('themeBtn');
+const html = document.documentElement;
+themeBtn.addEventListener('click', () => {
+  const dark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', dark ? 'light' : 'dark');
+  themeBtn.textContent = dark ? '🌙' : '☀️';
+  if (barChart) { barChart.destroy(); barChart = null; }
+  if (donutChart) { donutChart.destroy(); donutChart = null; }
+  if (window._res) renderCharts(window._res, window._drN, window._ndrN);
+});
+
+// Scroll fade
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+
+// Nav smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); }
+  });
+});
+
+// Upload
+const uz = document.getElementById('uploadZone');
+const fi = document.getElementById('fileInput');
+uz.addEventListener('dragover', e=>{e.preventDefault();uz.classList.add('drag');});
+uz.addEventListener('dragleave', ()=>uz.classList.remove('drag'));
+uz.addEventListener('drop', e=>{e.preventDefault();uz.classList.remove('drag');if(e.dataTransfer.files.length)setFile(e.dataTransfer.files[0]);});
+fi.addEventListener('change', e=>{if(e.target.files.length)setFile(e.target.files[0]);});
+
+const DEMO = [
+  {id:'AT1G12220.1',len:1294},{id:'AT1G59124.1',len:868},{id:'AT3G14460.1',len:1177},
+  {id:'AT4G16990.1',len:1245},{id:'AT5G40100.1',len:882},{id:'Os01g0700900.1',len:1025},
+  {id:'Os11g0695900.1',len:1153},{id:'Zm00001d003430_P001',len:1302},
+  {id:'VvNLR_001',len:911},{id:'StRGA_042',len:1058}
+];
+let hasFasta=false, selMdl='ds2', selDev='auto', barChart=null, donutChart=null;
+
+function setFile(f){
+  window._fastaFile = f;
+  document.getElementById('fpName').textContent = f.name;
+  document.getElementById('fpMeta').textContent = (f.size/1024).toFixed(1) + ' KB';
+  document.getElementById('filePill').classList.add('show');
+  hasFasta = true;
+  document.getElementById('runBtn').disabled = false;
+}
+document.getElementById('fpRm').addEventListener('click',()=>{
+  document.getElementById('filePill').classList.remove('show');
+  fi.value=''; hasFasta=false;
+  document.getElementById('runBtn').disabled=true;
+  document.getElementById('resWrap').classList.remove('on');
+});
+function loadDemo(){
+  document.getElementById('fpName').textContent='demo_proteins.fasta';
+  document.getElementById('fpMeta').textContent='10 demo sequences';
+  document.getElementById('filePill').classList.add('show');
+  hasFasta=true; window._demoMode=true;
+  document.getElementById('runBtn').disabled=false;
+}
+
+// Model select
+function selModel(m){
+  selMdl=m;
+  ['ds1','ds2'].forEach(k=>{
+    document.getElementById('mc-'+k).classList.toggle('sel',k===m);
+  });
+}
+
+// Device select
+function selDevice(d){
+  selDev=d;
+  ['auto','cpu','cuda'].forEach(k=>{
+    document.getElementById('dc-'+k).classList.toggle('sel',k===d);
+  });
+}
+
+// FASTA guide
+function toggleFasta(){
+  const b=document.getElementById('fastaBox');
+  b.classList.toggle('open');
+  event.target.textContent=b.classList.contains('open')?'▾ Hide FASTA format':'▸ Show expected FASTA format';
+}
+
+// Dataset detail
+function toggleDs(id){
+  const el=document.getElementById(id);
+  el.classList.toggle('open');
+  event.target.textContent=el.classList.contains('open')?'▾ Hide details':'▸ View details';
+}
+
+// Install tabs
+function switchInstall(id,el){
+  document.querySelectorAll('.itab').forEach(t=>t.classList.remove('act'));
+  document.querySelectorAll('.ipanel').forEach(p=>p.classList.remove('on'));
+  el.classList.add('act');
+  document.getElementById('ipanel-'+id).classList.add('on');
+}
+
+// FAQ
+function toggleFaq(btn){
+  btn.parentElement.classList.toggle('open');
+}
+
+// Cite
+function copyCite(){
+  navigator.clipboard.writeText('Pradhan UK†, Gupta A†, Kumar S, Kumari A, Das R, Kumar A, Meher PK*. PlantDRP: Leveraging ProtT5 embeddings and support vector machine for prediction of plant disease resistance proteins. [Manuscript submitted, 2025]');
+  event.target.textContent='✓ Copied!';
+  setTimeout(()=>event.target.textContent='📋 Copy Citation',2000);
+}
+function copyBibtex(){
+  navigator.clipboard.writeText('@article{plantdrp2025,\n  title={PlantDRP: Leveraging ProtT5 embeddings and support vector machine for prediction of plant disease resistance proteins},\n  author={Pradhan, Upendra Kumar and Gupta, Aanchal and Kumar, Shubham and Kumari, Arzoo and Das, Ritwika and Kumar, Anil and Meher, Prabina Kumar},\n  year={2025},\n  note={Manuscript submitted}\n}');
+  event.target.textContent='✓ Copied!';
+  setTimeout(()=>event.target.textContent='{ } Copy BibTeX',2000);
+}
+
+// Demo probabilities
+const DEMO_PROBS={
+  ds1:[0.96,0.11,0.89,0.85,0.07,0.73,0.81,0.92,0.59,0.77],
+  ds2:[0.98,0.08,0.94,0.90,0.04,0.80,0.87,0.95,0.66,0.84]
+};
+
+// Run Analysis
+async function runAnalysis(){
+  if(!hasFasta) return;
+  const btn = document.getElementById('runBtn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+  document.getElementById('resWrap').classList.remove('on');
+  const prog  = document.getElementById('prog');
+  const pFill = document.getElementById('pFill');
+  const pStep = document.getElementById('pStep');
+  prog.classList.add('on');
+
+  const steps = [
+    [15,'Step 1/3: Parsing protein FASTA sequences...'],
+    [50,'Step 2/3: Generating ProtT5-XL-U50 embeddings...'],
+    [82,'Step 3/3: Running SVM inference...'],
+  ];
+  let si=0;
+  const tick = setInterval(()=>{
+    if(si>=steps.length){clearInterval(tick);return;}
+    pFill.style.width=steps[si][0]+'%';
+    const parts=steps[si][1].split(':');
+    pStep.innerHTML='<strong>'+parts[0]+':</strong>'+parts[1];
+    si++;
+  },800);
+
+  // If demo mode, simulate results locally
+  if(window._demoMode){
+    await new Promise(r=>setTimeout(r,2800));
+    clearInterval(tick);
+    pFill.style.width='100%';
+    pStep.innerHTML='<strong>Complete</strong> : rendering results...';
+    const probs = DEMO_PROBS[selMdl];
+    const results = DEMO.map((d,i)=>({
+      id: d.id,
+      length_aa: d.len,
+      probability: probs[i],
+      prediction: probs[i]>=0.5 ? 'DR' : 'Non-DR',
+      model: selMdl.toUpperCase()
+    }));
+    const drN = results.filter(r=>r.prediction==='DR').length;
+    showResults({results, total: results.length, dr_count: drN, model: selMdl.toUpperCase()});
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+    formData.append('file', window._fastaFile);
+    formData.append('model', selMdl);
+    formData.append('threshold','0.5');
+    formData.append('device', selDev);
+    const response = await fetch('/predict',{method:'POST',body:formData});
+    clearInterval(tick);
+    pFill.style.width='100%';
+    pStep.innerHTML='<strong>Complete</strong> : rendering results...';
+    if(!response.ok){const err=await response.json();throw new Error(err.error||'Server error');}
+    const data = await response.json();
+    showResults(data);
+  } catch(err){
+    clearInterval(tick);
+    pStep.innerHTML='<strong style="color:red;">Error:</strong> '+err.message;
+    btn.disabled=false;
+    btn.classList.remove('loading');
+  }
+}
+
+function showResults(data){
+  const prog = document.getElementById('prog');
+  const btn  = document.getElementById('runBtn');
+  prog.classList.remove('on');
+  document.getElementById('pFill').style.width='0%';
+  btn.classList.remove('loading');
+  btn.disabled=false;
+
+  const results = data.results;
+  const drN = data.dr_count;
+  const ndrN = data.total - drN;
+  const drResults = results.filter(r=>r.prediction==='DR');
+  const avgP = drN>0 ? (drResults.reduce((a,b)=>a+b.probability,0)/drN).toFixed(2) : ':';
+
+  document.getElementById('stTotal').textContent = data.total;
+  document.getElementById('stDR').textContent    = drN;
+  document.getElementById('stNDR').textContent   = ndrN;
+  document.getElementById('stAvg').textContent   = avgP;
+  document.getElementById('resSub').textContent  = data.total+' proteins · SVM '+data.model+' · results from server';
+
+  document.getElementById('resBody').innerHTML = results.map((r,i)=>{
+    const pct=Math.round(r.probability*100);
+    const col=r.prediction==='DR'?'var(--g5)':'#D3D1C7';
+    return `<tr>
+      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:.75rem;">${i+1}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:.79rem;font-weight:500;">${r.id}</td>
+      <td style="color:var(--txt3);">${r.length_aa}</td>
+      <td><span style="font-weight:600;font-family:'DM Mono',monospace;">${pct}%</span>
+        <div class="pb"><div class="pf" style="width:${pct}%;background:${col};"></div></div></td>
+      <td><span class="bdg ${r.prediction==='DR'?'bdg-r':'bdg-nr'}">${r.prediction}</span></td>
+    </tr>`;
+  }).join('');
+
+  window._res=results; window._drN=drN; window._ndrN=ndrN;
+  renderCharts(results,drN,ndrN);
+  document.getElementById('resWrap').classList.add('on');
+  document.getElementById('resWrap').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function getChartColors(){
+  const dark=html.getAttribute('data-theme')==='dark';
+  return {
+    gridColor:dark?'rgba(255,255,255,.06)':'rgba(0,0,0,.05)',
+    tickColor:dark?'#6a7a5e':'#7a7a74',
+    drColor:'#4a7c1f',
+    ndrColor:dark?'#2a3a1e':'#D3D1C7'
+  };
+}
+
+function renderCharts(results,drN,ndrN){
+  if(barChart)barChart.destroy();
+  if(donutChart)donutChart.destroy();
+  const c=getChartColors();
+  const labels=results.map(r=>r.id.length>16?r.id.slice(0,14)+'…':r.id);
+  // Use correct field name: probability
+  const probs=results.map(r=>r.probability);
+  const colors=results.map(r=>r.prediction==='DR'?c.drColor:c.ndrColor);
+
+  barChart=new Chart(document.getElementById('barChart').getContext('2d'),{
+    type:'bar',
+    data:{labels,datasets:[{label:'DR Probability',data:probs,backgroundColor:colors,borderRadius:5,borderSkipped:false}]},
+    options:{
+      responsive:true,maintainAspectRatio:true,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'P(DR) = '+(c.raw*100).toFixed(1)+'%'}}},
+      scales:{
+        x:{ticks:{font:{family:'DM Mono',size:8},color:c.tickColor,maxRotation:45},grid:{display:false}},
+        y:{min:0,max:1,ticks:{callback:v=>(v*100)+'%',font:{size:10},color:c.tickColor},grid:{color:c.gridColor}}
+      }
+    }
+  });
+
+  donutChart=new Chart(document.getElementById('donutChart').getContext('2d'),{
+    type:'doughnut',
+    data:{
+      labels:['DR Proteins','Non-DR Proteins'],
+      datasets:[{data:[drN,ndrN],backgroundColor:[c.drColor,c.ndrColor],borderWidth:0,hoverOffset:6}]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:true,cutout:'65%',
+      plugins:{
+        legend:{position:'bottom',labels:{font:{family:'DM Sans',size:12},color:c.tickColor,padding:14}},
+        tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.raw+' proteins'}}
+      }
+    }
+  });
+}
+
+function downloadCSV(){
+  const d=window._res; if(!d)return;
+  const rows=[['Sequence_ID','Length_aa','DR_Probability','Prediction','Model']];
+  d.forEach(r=>rows.push([r.id,r.length_aa,r.probability,r.prediction,r.model||selMdl.toUpperCase()]));
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'}));
+  a.download='plantdrp_results.csv';
+  a.click();
+}
+</script>
+</body>
+</html>
