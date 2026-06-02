@@ -335,9 +335,6 @@ MSDNLKQELKELIEQLKKNPAVVKQFLDDIQKEMKDLEDELEAQMKELKDKIEALRQ...
 MASTQQLLLAAAVVVKKNPAVVKQFLDDIQKEMKDLEDELEAQMKELKDKIEALRQ...
 ```
 
-If you have nucleotide sequences, translate them first using [TransDecoder](https://github.com/TransDecoder/TransDecoder) or [EMBOSS Transeq](https://www.ebi.ac.uk/Tools/st/emboss_transeq/).
-
----
 
 ## Output Format
 
