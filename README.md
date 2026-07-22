@@ -358,7 +358,7 @@ Os01g0700900.1,1025,0.7821,DR,DS2
 
 ---
 
-## 💻 System Requirements
+## System Requirements
 
 | Component | Minimum (CPU) | Recommended (CPU) | Recommended (GPU) |
 |-----------|---------------|-------------------|-------------------|
@@ -366,7 +366,7 @@ Os01g0700900.1,1025,0.7821,DR,DS2
 | RAM | 16 GB | 32 GB | 32 GB+ |
 | Storage | 6 GB free | 10 GB free | 10 GB free |
 | GPU | Not required | Not required | NVIDIA GPU (8 GB+ VRAM) |
-| CUDA | — | — | CUDA 11.8+ |
+| CUDA | - | - | CUDA 11.8+ |
 | Operating System | Windows, Linux, macOS | Windows/Linux | Linux recommended |
 | Embedding Speed | ~20–40 s/sequence | ~8–20 s/sequence | ~1–3 s/sequence |
 
