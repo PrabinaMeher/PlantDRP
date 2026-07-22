@@ -358,19 +358,37 @@ Os01g0700900.1,1025,0.7821,DR,DS2
 
 ---
 
-## System Requirements
+## 💻 System Requirements
 
-| | Minimum (CPU) | Recommended (GPU) |
-|---|---|---|
-| Python | 3.9 or higher | 3.9 or higher |
-| RAM | 16 GB | 32 GB |
-| Storage | ~5 GB (ProtT5 weights) | ~5 GB |
-| GPU | — | NVIDIA, 8 GB+ VRAM |
-| CUDA | — | 11.8 or higher |
-| Embedding speed | ~10–30 s per sequence | ~1–3 s per sequence |
-| OS | Windows / Linux / macOS | Linux recommended |
+| Component | Minimum (CPU) | Recommended (CPU) | Recommended (GPU) |
+|-----------|---------------|-------------------|-------------------|
+| Python | 3.9+ | 3.9+ | 3.9+ |
+| RAM | 16 GB | 32 GB | 32 GB+ |
+| Storage | 6 GB free | 10 GB free | 10 GB free |
+| GPU | Not required | Not required | NVIDIA GPU (8 GB+ VRAM) |
+| CUDA | — | — | CUDA 11.8+ |
+| Operating System | Windows, Linux, macOS | Windows/Linux | Linux recommended |
+| Embedding Speed | ~20–40 s/sequence | ~8–20 s/sequence | ~1–3 s/sequence |
 
-> The ProtT5-XL-U50 model (~3 GB) is the bottleneck. The SVM inference itself is near-instant. For datasets of 100+ sequences, GPU is strongly recommended. For very large batches, use the CLI.
+> **Note**
+>
+> PlantDRP uses the **ProtT5-XL-UniRef50** protein language model to generate sequence embeddings. While the application can run on systems with **16 GB RAM**, loading the model may exceed available memory depending on the operating system and background applications. For reliable execution, **32 GB RAM is recommended**, especially for processing multiple sequences.
+
+###  Performance Notes
+
+- **First run:** Downloads the ProtT5 model (~5 GB) and caches it locally.
+- **Embedding generation** is the computational bottleneck.
+- **SVM inference** is nearly instantaneous after embeddings are generated.
+- For datasets containing **100+ protein sequences**, using a **CUDA-enabled GPU** or the **CLI** is strongly recommended.
+
+### Approximate Resource Usage
+
+| Task | Resource Usage |
+|------|----------------|
+| Model download (first run) | ~5 GB |
+| Peak RAM during embedding generation | 16–24 GB (CPU) |
+| CPU Utilization | High |
+| SVM Prediction | <1 second |
 
 ---
 
