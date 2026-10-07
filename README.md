@@ -440,27 +440,9 @@ prediction of plant disease resistance proteins.
 }
 ```
 
----
 
-## Authors
 
-| Name | Role | Affiliation |
-|---|---|---|
-| Upendra Kumar Pradhan | Joint First Author | Division of Statistical Ecology and Environmental Statistics, ICAR-IASRI |
-| Aanchal Gupta | Joint First Author | Division of Statistical Ecology and Environmental Statistics, ICAR-IASRI |
-| Shubham Kumar | Contributor | Division of Statistical Ecology and Environmental Statistics, ICAR-IASRI |
-| Arzoo Kumari | Contributor | Division of Statistical Ecology and Environmental Statistics, ICAR-IASRI |
-| Ritwika Das | Contributor | Division of Statistical Ecology and Environmental Statistics, ICAR-IASRI |
-| Anil Kumar | Contributor | ICAR, New Delhi |
-| **Prabina Kumar Meher** | **Corresponding Author** | Division of Statistical Ecology and Environmental Statistics, ICAR-IASRI |
 
-**ICAR-Indian Agricultural Statistics Research Institute (ICAR-IASRI)**  
-Division of Statistical Ecology and Environmental Statistics 
-PUSA, New Delhi – 110012, India
-
-✉ meherprabin@yahoo.com  
-
----
 
 
 *PlantDRP · ICAR-IASRI · New Delhi · 2025*
