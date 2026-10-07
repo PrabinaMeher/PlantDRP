@@ -3,13 +3,7 @@
 <p align="center">
   <img src="Workflow.jpg" alt="PlantDRP Workflow" width="100%">
 </p>
----
-## Developers
-- **Dr. Anil Kumar**, ADG (TC), ICAR, New Delhi, India
-- **Dr. Prabina Kumar Meher**, Senior Scientist, ICAR-IASRI, New Delhi, India
-- **Dr. Upendra Kumar Pradhan**, Senior Scientist, ICAR-IASRI, New Delhi, India
-- **Shubham Kumar**, Young Professional II, ICAR-IASRI, New Delhi, India
-- **Aanchal Gupta**, Project Associate I, ICAR-IASRI, New Delhi, India
+
 **Prediction of Plant Disease Resistance Proteins**
 
 
@@ -19,7 +13,12 @@
 PlantDRP predicts disease resistance (R) proteins in plants directly from protein sequences, using **ProtT5-XL-U50** protein language model embeddings and a **Support Vector Machine** classifier. It requires no structural data, sequence alignment, or homology information.
 
 ---
-
+## Developers
+- **Dr. Anil Kumar**, ADG (TC), ICAR, New Delhi, India
+- **Dr. Prabina Kumar Meher**, Senior Scientist, ICAR-IASRI, New Delhi, India
+- **Dr. Upendra Kumar Pradhan**, Senior Scientist, ICAR-IASRI, New Delhi, India
+- **Aanchal Gupta**, Project Associate I, ICAR-IASRI, New Delhi, India
+- **Shubham Kumar**, Young Professional II, ICAR-IASRI, New Delhi, India
 ## Table of Contents
 
 - [Overview](#overview)
