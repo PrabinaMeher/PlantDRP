@@ -410,35 +410,6 @@ plantdrp predict \
 
 ---
 
-## Citation
-
-*The associated manuscript has been submitted for publication. The citation will be updated upon acceptance.*
-
-**Provisional citation:**
-
-```
-Pradhan UK†, Gupta A†, Kumar S, Kumari A, Das R, Kumar A, Meher PK*.
-PlantDRP: Leveraging ProtT5 embeddings and support vector machine for
-prediction of plant disease resistance proteins.
-[Manuscript submitted, 2025]
-```
-
-† Joint first authors  
-\* Corresponding author
-
-**BibTeX:**
-
-```bibtex
-@article{plantdrp2025,
-  title   = {PlantDRP: Leveraging ProtT5 embeddings and support vector machine
-             for prediction of plant disease resistance proteins},
-  author  = {Pradhan, Upendra Kumar and Gupta, Aanchal and Kumar, Shubham
-             and Kumari, Arzoo and Das, Ritwika and Kumar, Anil
-             and Meher, Prabina Kumar},
-  year    = {2025},
-  note    = {Manuscript submitted}
-}
-```
 
 
 
